@@ -1,0 +1,18 @@
+{
+  "type": "record",
+  "name": "UserCreatedEvent",
+  "namespace": "org.switchboard.schemas",
+  "fields": [
+    { "name": "name", "type": "string" },
+    { "name": "emailId", "type": "string" },
+    { "name": "role", "type": "string" },
+    {
+      "name": "metadata",
+      "type": {
+        "type": "map",
+        "values": "string"
+      },
+      "default": {}
+    }
+  ]
+}

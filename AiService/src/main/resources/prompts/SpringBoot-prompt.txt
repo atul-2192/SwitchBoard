@@ -1,0 +1,114 @@
+Spring Boot Interview Preparation Topics
+1. Spring & Core Concepts (Pre-requisite Refresh)
+What is Spring Framework? Difference between Spring & Spring Boot
+IoC (Inversion of Control), DI (Dependency Injection)
+ApplicationContext vs BeanFactory
+Bean scopes (singleton, prototype, request, session)
+Bean lifecycle & init/destroy methods
+@Component, @Service, @Repository, @Controller, @RestController
+@Autowired, @Qualifier, @Primary
+@Configuration, @Bean, @Lazy
+@Value, @PropertySource, @ConfigurationProperties
+
+2. Spring Boot Fundamentals
+What is Spring Boot & why use it?
+Spring Boot starters (starter-web, starter-data-jpa, etc.)
+Auto-configuration (@EnableAutoConfiguration, @SpringBootApplication)
+Spring Boot application lifecycle
+Spring Boot CLI basics
+Spring Boot Actuator (health, metrics, env, custom endpoints)
+Banner customization
+
+3. Configuration & Profiles
+application.properties vs application.yml
+Spring Profiles (@Profile, @ActiveProfiles)
+Externalized Configuration (env variables, command-line args)
+@ConfigurationProperties vs @Value
+Custom PropertySource
+
+4. Spring Boot Web Development
+Building REST APIs with @RestController
+@GetMapping, @PostMapping, @PutMapping, @DeleteMapping
+RequestParam, PathVariable, RequestBody, ResponseEntity
+Exception Handling (@ControllerAdvice, @ExceptionHandler, @ResponseStatus)
+Validations (JSR-303, @Valid, @NotNull, custom validators)
+JSON Serialization/Deserialization (Jackson)
+File upload/download in Spring Boot
+
+5. Spring Boot Data Access
+
+Spring Data JPA (repositories, JpaRepository, CrudRepository, PagingAndSortingRepository)
+Query Methods (findBy, existsBy, countBy, etc.)
+@Query (JPQL & native queries)
+Criteria API & Specifications
+Entity Mapping (OneToOne, OneToMany, ManyToMany)
+Transactions (@Transactional, propagation, isolation)
+Lazy vs Eager loading
+N+1 select problem & solutions
+Spring Boot with JDBC Template
+
+6. Spring Boot Security
+Basics of Spring Security
+Authentication vs Authorization
+In-memory authentication vs Database authentication
+UserDetailsService, PasswordEncoder
+Role-based security (@PreAuthorize, @Secured, @EnableGlobalMethodSecurity)
+JWT authentication in Spring Boot
+CSRF protection & CORS configuration
+OAuth2 with Spring Boot
+
+7. Spring Boot Testing
+Unit Testing with JUnit 5
+@SpringBootTest vs @WebMvcTest vs @DataJpaTest
+MockMvc, TestRestTemplate
+Mockito basics (when, verify)
+Embedded DB testing (H2)
+Integration Testing with Spring Boot
+WireMock for external API testing
+
+8. Spring Boot Messaging & Async
+Asynchronous processing (@Async, Future, CompletableFuture)
+Scheduling tasks (@Scheduled, cron jobs)
+Messaging with RabbitMQ, Kafka (basics, listeners, producers, consumers)
+@EnableAsync, ThreadPoolTaskExecutor
+
+9. Spring Boot Caching
+Spring Cache abstraction
+@Cacheable, @CachePut, @CacheEvict
+CacheManager (EhCache, Redis, Caffeine)
+Expiry policies
+
+10. Spring Boot Microservices
+REST API design best practices
+Inter-service communication (FeignClient, RestTemplate, WebClient)
+Service discovery (Eureka, Consul)
+Load balancing (Spring Cloud LoadBalancer, Ribbon)
+API Gateway (Spring Cloud Gateway, Zuul)
+Circuit Breaker/Resilience (Resilience4j, Hystrix)
+Config Server & Distributed Configurations
+Centralized Logging & Monitoring (ELK, Zipkin, Sleuth)
+
+11. Spring Boot DevOps & Deployment
+Packaging Spring Boot apps (jar vs war)
+Embedded Tomcat/Jetty/Undertow
+Dockerizing a Spring Boot app
+Kubernetes basics for deployment
+CI/CD pipeline integration (Jenkins, GitHub Actions)
+External configuration management (Vault, Consul, AWS Parameter Store)
+
+12. Spring Boot Advanced Topics
+Custom Auto-configuration
+Spring Boot Starter creation
+Conditional beans (@ConditionalOnProperty, @ConditionalOnMissingBean)
+Event-driven architecture (ApplicationEventPublisher, @EventListener)
+AOP (Aspect-Oriented Programming: @Aspect, @Around, @Before, @After)
+Spring Boot with GraphQL
+Reactive Programming with Spring WebFlux
+
+13. Performance & Best Practices
+Spring Boot optimization techniques
+Connection Pooling (HikariCP)
+Actuator for monitoring performance
+Profiling & Debugging (Spring Boot DevTools)
+Best practices for exception handling, logging, validation
+Common pitfalls in Spring Boot apps

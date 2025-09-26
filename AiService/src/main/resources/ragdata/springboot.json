@@ -1,0 +1,192 @@
+[
+  {
+    "topic": "Spring Boot Basics",
+    "subtopics": [
+      "Introduction to Spring Boot",
+      "Spring Boot vs Spring Framework",
+      "Project Structure & Starters",
+      "Dependency Management (Maven/Gradle)"
+    ],
+    "important_points": [
+      "Understand opinionated configuration",
+      "Role of Spring Boot Starter dependencies",
+      "Auto-configuration concept",
+      "Differences with traditional Spring XML configuration"
+    ],
+    "hours_required": 5,
+    "priority": 5,
+    "interview_importance": 5,
+    "proficiency_level": ["Beginner", "Intermediate"]
+  },
+  {
+    "topic": "Spring Boot Annotations",
+    "subtopics": [
+      "@SpringBootApplication",
+      "@Component, @Service, @Repository",
+      "@Configuration, @Bean",
+      "@Autowired and Dependency Injection"
+    ],
+    "important_points": [
+      "Meta-annotation concept in @SpringBootApplication",
+      "Component scanning and bean lifecycle",
+      "Field vs Constructor injection",
+      "Annotation-driven dependency management"
+    ],
+    "hours_required": 6,
+    "priority": 5,
+    "interview_importance": 5,
+    "proficiency_level": ["Beginner", "Intermediate"]
+  },
+  {
+    "topic": "Spring Boot Configuration",
+    "subtopics": [
+      "application.properties vs application.yml",
+      "Profiles (@Profile)",
+      "ConfigurationProperties",
+      "Externalized Configurations (Env Vars, Command Line)"
+    ],
+    "important_points": [
+      "Difference between YAML and Properties",
+      "Spring Environment abstraction",
+      "Profile-based bean loading",
+      "Real-world use of ConfigurationProperties"
+    ],
+    "hours_required": 5,
+    "priority": 4,
+    "interview_importance": 4,
+    "proficiency_level": ["Intermediate"]
+  },
+  {
+    "topic": "Spring Boot REST APIs",
+    "subtopics": [
+      "@RestController vs @Controller",
+      "RequestMapping, GetMapping, PostMapping",
+      "RequestBody, PathVariable, RequestParam",
+      "ResponseEntity & Exception Handling"
+    ],
+    "important_points": [
+      "How Spring handles HTTP requests internally",
+      "Serialization & Deserialization with Jackson",
+      "ControllerAdvice for global exceptions",
+      "Best practices for API versioning"
+    ],
+    "hours_required": 7,
+    "priority": 5,
+    "interview_importance": 5,
+    "proficiency_level": ["Beginner", "Intermediate", "Advanced"]
+  },
+  {
+    "topic": "Spring Boot Data Access (Spring Data JPA)",
+    "subtopics": [
+      "JPA Repositories",
+      "CRUD Operations",
+      "Query Methods",
+      "JPQL vs Native Queries"
+    ],
+    "important_points": [
+      "Difference between CrudRepository & JpaRepository",
+      "Pagination and Sorting",
+      "Lazy vs Eager loading",
+      "Entity relationships (OneToMany, ManyToMany)"
+    ],
+    "hours_required": 8,
+    "priority": 5,
+    "interview_importance": 5,
+    "proficiency_level": ["Intermediate", "Advanced"]
+  },
+  {
+    "topic": "Spring Boot Security",
+    "subtopics": [
+      "Spring Security Basics",
+      "Authentication & Authorization",
+      "JWT Authentication",
+      "OAuth2 Integration"
+    ],
+    "important_points": [
+      "Spring Security Filter Chain",
+      "Stateless JWT vs Session-based Auth",
+      "Role-based access control",
+      "Common security pitfalls"
+    ],
+    "hours_required": 10,
+    "priority": 5,
+    "interview_importance": 5,
+    "proficiency_level": ["Intermediate", "Advanced"]
+  },
+  {
+    "topic": "Spring Boot Actuator & Monitoring",
+    "subtopics": [
+      "Enabling Actuator",
+      "Health Checks",
+      "Metrics & Custom Endpoints",
+      "Integration with Prometheus / Grafana"
+    ],
+    "important_points": [
+      "Difference between Actuator endpoints",
+      "Securing sensitive actuator endpoints",
+      "Operational importance in microservices",
+      "Production monitoring"
+    ],
+    "hours_required": 4,
+    "priority": 3,
+    "interview_importance": 3,
+    "proficiency_level": ["Intermediate", "Advanced"]
+  },
+  {
+    "topic": "Spring Boot Testing",
+    "subtopics": [
+      "Unit Testing with JUnit & Mockito",
+      "Spring Boot Test Annotations",
+      "MockMvc & RestTemplate Testing",
+      "Integration Testing"
+    ],
+    "important_points": [
+      "Difference between @WebMvcTest and @SpringBootTest",
+      "How to test repository layer with @DataJpaTest",
+      "MockBean usage",
+      "TestContainers for DB testing"
+    ],
+    "hours_required": 6,
+    "priority": 4,
+    "interview_importance": 4,
+    "proficiency_level": ["Intermediate", "Advanced"]
+  },
+  {
+    "topic": "Spring Boot Microservices",
+    "subtopics": [
+      "Service Discovery (Eureka)",
+      "API Gateway (Spring Cloud Gateway)",
+      "Centralized Config (Spring Cloud Config)",
+      "Circuit Breaker (Resilience4j)"
+    ],
+    "important_points": [
+      "Benefits and drawbacks of microservices",
+      "Eureka vs Consul vs Zookeeper",
+      "Patterns for service resilience",
+      "Best practices for distributed systems"
+    ],
+    "hours_required": 12,
+    "priority": 4,
+    "interview_importance": 5,
+    "proficiency_level": ["Advanced"]
+  },
+  {
+    "topic": "Spring Boot Advanced Topics",
+    "subtopics": [
+      "Reactive Programming (Spring WebFlux)",
+      "Message Queues (Kafka, RabbitMQ)",
+      "Caching with Spring Cache",
+      "Scheduler & Async Execution"
+    ],
+    "important_points": [
+      "When to use WebFlux over MVC",
+      "Producer/Consumer patterns with Kafka",
+      "@Cacheable, @CacheEvict usage",
+      "Threading model in @Async"
+    ],
+    "hours_required": 15,
+    "priority": 3,
+    "interview_importance": 4,
+    "proficiency_level": ["Advanced"]
+  }
+]
