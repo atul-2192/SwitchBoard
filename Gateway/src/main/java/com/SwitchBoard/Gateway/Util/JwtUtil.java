@@ -16,15 +16,28 @@ public class JwtUtil {
         this.jwksService = jwksService;
     }
 
-    /**
-     * Parse JWT token and verify using public key from JWKS
-     */
     public Claims parseClaims(String token) {
-        // Extract "kid" from token header
-        String kid = Jwts.parserBuilder().build()
-                .parseClaimsJws(token)
-                .getHeader()
-                .getKeyId();
+        // Extract "kid" from token header without signature verification
+        String kid = null;
+        try {
+            // Parse header only (without signature verification)
+            String[] chunks = token.split("\\.");
+            String headerB64 = chunks[0];
+            String header = new String(java.util.Base64.getUrlDecoder().decode(headerB64));
+            
+            // Extract kid from header JSON if present
+            if (header.contains("\"kid\"")) {
+                String[] parts = header.split("\"kid\":");
+                if (parts.length > 1) {
+                    String kidPart = parts[1].trim();
+                    if (kidPart.startsWith("\"")) {
+                        kid = kidPart.substring(1, kidPart.indexOf("\"", 1));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // If we can't parse the header, we'll use fallback key
+        }
 
         RSAPublicKey key = jwksService.getKey(kid);
 

@@ -1,39 +1,43 @@
 package com.SwitchBoard.Gateway.Filter;
 
 import com.SwitchBoard.Gateway.Service.JwksService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.SwitchBoard.Gateway.Util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.stereotype.Component;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+//import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import reactor.core.publisher.Mono;
 
-import java.security.interfaces.RSAPublicKey;
-import java.util.Base64;
+import java.util.Collections;
 
-@Component
+// Disabled this filter - now using SecurityWebFilterChain approach
+//@Component
+@Slf4j
 public class JwtAuthFilter implements GlobalFilter, Ordered {
 
-    private final JwksService jwksService;
-    private final ObjectMapper objectMapper;
+    private final JwtUtil jwtUtil;
 
-    public JwtAuthFilter(JwksService jwksService, ObjectMapper objectMapper) {
-        this.jwksService = jwksService;
-        this.objectMapper = objectMapper;
+    public JwtAuthFilter(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
     }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
-        // bypass auth endpoints (login, jwks, etc.)
-        if (path.startsWith("/api/v1/auth/") || path.equals("/.well-known/jwks.json")) {
+
+        if (exchange.getRequest().getMethod() == HttpMethod.OPTIONS
+                || path.startsWith("/api/v1/auth/")
+                || path.equals("/.well-known/jwks.json")) {
             return chain.filter(exchange);
         }
 
@@ -44,55 +48,50 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         }
 
         String token = authHeader.substring(7);
+
         try {
-            String kid = extractKid(token);
-            RSAPublicKey key = jwksService.getKey(kid);
-            if (key == null) {
-                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-                return exchange.getResponse().setComplete();
+            Claims claims = jwtUtil.parseClaims(token);
+
+            // Use 'sub' instead of 'email' for the subject
+            String email = claims.getSubject(); // 'sub' field
+            
+            // Handle 'role' as array and extract first role
+            Object rolesObj = claims.get("role");
+            String role = "USER"; // default role
+            
+            if (rolesObj instanceof java.util.List) {
+                @SuppressWarnings("unchecked")
+                java.util.List<String> roles = (java.util.List<String>) rolesObj;
+                if (!roles.isEmpty()) {
+                    role = roles.get(0);
+                }
+            } else if (rolesObj instanceof String) {
+                role = (String) rolesObj;
             }
 
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    email,
+                    null,
+                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
+            );
 
-            Object userIdObj = claims.get("userId");
-            String userId = userIdObj == null ? claims.getSubject() : String.valueOf(userIdObj);
-            String email = claims.get("email", String.class);
-            String role = claims.get("role", String.class);
-
-            // forward identity as headers to downstream services
             ServerHttpRequest mutated = exchange.getRequest().mutate()
-                    .header("X-User-Id", userId)
-                    .header("X-User-Email", email == null ? "" : email)
-                    .header("X-User-Role", role == null ? "" : role)
+                    .header("X-User-Email", email)
+                    .header("X-User-Role", role)
                     .build();
 
-            return chain.filter(exchange.mutate().request(mutated).build());
+            return chain.filter(exchange.mutate().request(mutated).build())
+                    .contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth));
 
-        } catch (Exception ex) {
+        } catch (Exception e) {
+            log.error("JWT validation failed", e);
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
     }
 
-    private String extractKid(String token) {
-        try {
-            String[] parts = token.split("\\.");
-            if (parts.length < 2) return null;
-            String headerJson = new String(Base64.getUrlDecoder().decode(parts[0]));
-            JsonNode headerNode = objectMapper.readTree(headerJson);
-            JsonNode kidNode = headerNode.get("kid");
-            return kidNode != null ? kidNode.asText() : null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     @Override
     public int getOrder() {
-        return -1; // high priority
+        return -100; // ensure runs before main security filter
     }
 }
